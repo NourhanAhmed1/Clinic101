@@ -1,0 +1,37 @@
+# depslib dependency file v1.0
+1577392643 source:c:\users\nourhan\desktop\c\clinic101\clinic_main.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<stdbool.h>
+	"LBTY.h"
+	"BIT_MATH.h"
+	"STD_TYPES.h"
+	"CLINIC_privt.h"
+	"CLINIC_int.h"
+	"CLINIC_config.h"
+
+1577256447 c:\users\nourhan\desktop\c\clinic101\lbty.h
+
+1576662436 c:\users\nourhan\desktop\c\clinic101\bit_math.h
+
+1576831597 c:\users\nourhan\desktop\c\clinic101\std_types.h
+
+1577391472 c:\users\nourhan\desktop\c\clinic101\clinic_privt.h
+
+1577391927 c:\users\nourhan\desktop\c\clinic101\clinic_int.h
+
+1577386850 c:\users\nourhan\desktop\c\clinic101\clinic_config.h
+
+1577394080 source:c:\users\nourhan\desktop\c\clinic101\clinic_prog.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<stdbool.h>
+	"LBTY.h"
+	"BIT_MATH.h"
+	"STD_TYPES.h"
+	"CLINIC_int.h"
+	"CLINIC_privt.h"
+	"CLINIC_config.h"
+
