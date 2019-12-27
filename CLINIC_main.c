@@ -13,7 +13,7 @@ int main()
 {
     Error_Status Error1, Error2, Error3, Error4, Error5 ,Error6;
     u8 u8_choice, u8_gender;
-    u8* u8_name[50];
+    u8 u8_name[50];
     u16 u16_age , u16_rec_num;
     f32 f32_time;
 	while(1)
@@ -41,7 +41,8 @@ int main()
             scanf("%d" , &u16_rec_num);
 			Error1 = CLINIC_enuNewRecord(u8_name ,u16_age ,u8_gender ,u16_rec_num);
 			if(Error1 == LBTY_OK) printf("\n New Record was added successfully\n");
-			else printf("\n New Record couldn't be added please try again\n");
+			else if(Error1 == LBTY_NULL_POINTER) printf("\n New Record couldn't be added please try again\n");
+			else printf("\n This record already exists\n");
 			break;
 		 case 2:
 			printf("\nEnter the patient's name to edit : ");

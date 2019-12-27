@@ -18,13 +18,15 @@ Error_Status CLINIC_enuNewRecord(u8* u8_name , u16 u16_age , u8 u8_gendar , u16 
 {
     struct new_record* link = (struct new_record*)malloc(sizeof(struct new_record));//create new record
     Error_Status error ;
+    struct new_record* current == head1;
+    struct new_record* previous == NULL;
+    u8 u8_count = 0;
     if(link == NULL) //if memory location couldn't be allocated
     {
-        error = LBTY_NOT_OK;
+        error = LBTY_NULL_POINTER;
     }
     else
     {
-        error = LBTY_OK;
             if(head1 == NULL) //if no records
                 {
                     link->u8_name[50] = u8_name[50];
@@ -36,13 +38,31 @@ Error_Status CLINIC_enuNewRecord(u8* u8_name , u16 u16_age , u8 u8_gendar , u16 
                 }
                 else
                 {
-                    link->u8_name[50] = u8_name[50];
-                    link->u16_age = u16_age;
-                    link->u8_gendar = u8_gendar;
-                    link->u16_recordNumber = u16_recordNumber;
-                    link ->next = head1;
-                    head1 = link ;
+                    while(current->u16_recordNumber != u16_recordNumber) //to search for the record number in the stored records
+                    {
+                        if(current->next == NULL) //record number wasn't used before
+                        {
+                          error = LBTY_OK;
+                          link->u8_name[50] = u8_name[50];
+                          link->u16_age = u16_age;
+                          link->u8_gendar = u8_gendar;
+                          link->u16_recordNumber = u16_recordNumber;
+                          link ->next = head1;
+                          head1 = link ;
+                          u8_count++;
+                        }
+                        else
+                        {
+                            previous = current ;
+                            current = current->next;
+                        }
+                    }
+
                 }
+    }
+    if(u8_count == 0)
+    {
+        error = LBTY_NOT_OK;
     }
     return error;
 }
