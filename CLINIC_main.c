@@ -30,7 +30,7 @@ int main()
 
 		switch(u8_choice)
 		{
-		 case 1:
+		 case 1: // done
 			printf("\nEnter the patient's name : ");
 			//fgets(u8_name, sizeof(u8_name), stdin);
 			//scanf("%[^\n]s",u8_name);
@@ -46,7 +46,7 @@ int main()
 			else if(Error1 == LBTY_NULL_POINTER) printf("\n New Record couldn't be added please try again\n");
 			else if(Error1 == LBTY_NOT_OK )printf("\n This record already exists\n");
 			break;
-		 case 2:
+		 case 2: //done
 			printf("\nEnter the patient's name to edit : ");
 			//fgets(u8_name, sizeof(u8_name), stdin);
             scanf("%s" , u8_name);

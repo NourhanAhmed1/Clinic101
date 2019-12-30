@@ -12,7 +12,7 @@ struct new_record
 
 struct new_appointment
 {
-     u8 u8_name[50] ;
+     char u8_name[50] ;
      f32 f32_time;
      struct new_appointment* next;
 };
