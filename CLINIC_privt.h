@@ -3,7 +3,7 @@
 
 struct new_record
 {
-    u8 u8_name[50] ;
+    char u8_name[50] ;
     u16 u16_age ;
     u8 u8_gendar ;
     u16 u16_recordNumber ;

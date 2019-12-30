@@ -10,17 +10,17 @@
 #include "CLINIC_config.h"
 //write here the initialization of all the functions you used
 
-static f32 times[5] = {2.00 , 2.30 , 3.00, 3.30 , 4.00 , 4.30 , 5.00};// array of times available to reserve
+static f32 times[7] = {2.00 , 2.30 , 3.00, 3.30 , 4.00 , 4.30 , 5.00};// array of times available to reserve
 struct new_record* head1 = NULL;
 struct new_appointment* head2 = NULL;
 
-Error_Status CLINIC_enuNewRecord(u8* u8_name , u16 u16_age , u8 u8_gendar , u16 u16_recordNumber)
+Error_Status CLINIC_enuNewRecord(char* u8_name , u16 u16_age , u8 u8_gendar , u16 u16_recordNumber)
 {
     struct new_record* link = (struct new_record*)malloc(sizeof(struct new_record));//create new record
     Error_Status error ;
-    struct new_record* current == head1;
-    struct new_record* previous == NULL;
-    u8 u8_count = 0;
+    struct new_record* current = head1;
+    //struct new_record* previous = NULL;
+    //u8 u8_count = 0;
     if(link == NULL) //if memory location couldn't be allocated
     {
         error = LBTY_NULL_POINTER;
@@ -38,72 +38,63 @@ Error_Status CLINIC_enuNewRecord(u8* u8_name , u16 u16_age , u8 u8_gendar , u16 
                 }
                 else
                 {
-                    while(current->u16_recordNumber != u16_recordNumber) //to search for the record number in the stored records
-                    {
-                        if(current->next == NULL) //record number wasn't used before
+                    if(current->u16_recordNumber != u16_recordNumber)//current
                         {
-                          error = LBTY_OK;
+                            error = LBTY_OK;
                           link->u8_name[50] = u8_name[50];
                           link->u16_age = u16_age;
                           link->u8_gendar = u8_gendar;
                           link->u16_recordNumber = u16_recordNumber;
                           link ->next = head1;
                           head1 = link ;
-                          u8_count++;
+
                         }
-                        else
-                        {
-                            previous = current ;
-                            current = current->next;
-                        }
-                    }
+                else{
+                    error = LBTY_NOT_OK;
+                }
 
                 }
     }
-    if(u8_count == 0)
-    {
-        error = LBTY_NOT_OK;
-    }
+
     return error;
 }
-Error_Status CLINIC_enuEditRecord(u8* u8_name , u16 u16_age , u8 u8_gendar , u16 u16_recordNumber)
+Error_Status CLINIC_enuEditRecord(char* u8_name , u16 u16_age , u8 u8_gendar , u16 u16_recordNumber)
 {
+    u8 x = 100;
     struct new_record* current = head1;
     Error_Status error;
-    while(current->u8_name != u8_name)//search for the record
+    while((current->u16_recordNumber != u16_recordNumber) && current != NULL)//search for the record
     {
-        if(current->next == NULL) //no record has entered name
-        {
-            error = LBTY_NOT_OK;
-        }
-        else
-        {
             current = current->next;
-        }
     }
-    if(current->u8_name == u8_name)
+    if(current->u16_recordNumber == u16_recordNumber)
     {
-        error = LBTY_OK;
-        current->u8_name[50] = u8_name[50];
-        current->u16_age=u16_age;
-        current->u8_gendar = u8_gendar ;
-        current->u16_recordNumber= u16_recordNumber;
+            error = LBTY_OK;
+            current->u8_name[50] = u8_name[50];
+            current->u16_age=u16_age;
+            current->u8_gendar = u8_gendar ;
+            current->u16_recordNumber= u16_recordNumber;
     }
+    else
+    {
+            error = LBTY_NOT_OK;
+    }
+
     return error;
 }
 
-Error_Status CLINIC_enuNewReservation(u8* u8_name , f32 f32_time)
+Error_Status CLINIC_enuNewReservation(char* u8_name , f32 f32_time)
 {
     struct new_appointment* link = (struct new_appointment*)malloc(sizeof(struct new_appointment));//create new reservation
     Error_Status error;
     u8 u8_count = 0;
-    for(int i =0 ; i<5 ; i++)
+    for(int i =0 ; i<7 ; i++)
     {
         if(f32_time == times[i]) //check if time available
         {
             error = LBTY_OK;
             u8_count++;
-            for (u8 u8_c = i; u8_c < 5; u8_c++) //remove time from times available
+            for (u8 u8_c = i; u8_c < 7; u8_c++) //remove time from times available
                 {
                     times[u8_c] = times[u8_c+1];
                 }
@@ -130,18 +121,17 @@ Error_Status CLINIC_enuNewReservation(u8* u8_name , f32 f32_time)
     }
    return error;
 }
-Error_Status CLINIC_enuRemoveReservation(u8* u8_name)
+Error_Status CLINIC_enuRemoveReservation(char* u8_name)
 {
     Error_Status error;
 	int item;
 	struct new_appointment *tmp = head2;
     struct new_appointment *previous = NULL;
-
 	if( CLINIC_enuResEmpty()== LBTY_NULL_POINTER ) //if there's no appointments
 	{
 	    error = LBTY_NULL_POINTER;
 	}
-	while(tmp->u8_name[50] != u8_name[50]) //search for reservation with the patient's name
+	while(tmp->u8_name[50] != u8_name) //search for reservation with the patient's name
     {
         if(tmp->next == NULL) //Reservation not found
         {
@@ -165,11 +155,11 @@ Error_Status CLINIC_enuRemoveReservation(u8* u8_name)
 	}
 	item=tmp->f32_time;
 	free(tmp);
-	times[4] = item; // add time back to the available times
+	times[6] = item; // add time back to the available times
 	u8 u8_temp;
-	for(u8 u8_i=0 ; u8_i<5 ; u8_i++) //sort the times available
+	for(u8 u8_i=0 ; u8_i<7 ; u8_i++) //sort the times available
     {
-        for(u8 u8_j=0 ; u8_j<4-u8_i ; u8_j++)
+        for(u8 u8_j=0 ; u8_j<6-u8_i ; u8_j++)
         {
             if(times[u8_j] > times[u8_j+1])
             {
@@ -184,7 +174,7 @@ Error_Status CLINIC_enuRemoveReservation(u8* u8_name)
 Error_Status CLINIC_enuDisplayRecords()
 {
     Error_Status error;
-	struct new_record *p;
+	struct new_record *p = head1;
 	if(CLINIC_enuRecEmpty()== LBTY_NULL_POINTER)//no records
 	{
 	    error = LBTY_NOT_OK;
@@ -193,16 +183,28 @@ Error_Status CLINIC_enuDisplayRecords()
     {
         error = LBTY_OK;
         printf("\nAvailable Records :\n");
-	p=head1->next;
-	do
-	{
-	    printf("\nname : ");
-        puts(p->u8_name);
-		printf("\nage :%d \n gender :%c \n record number :%d \n",p->u8_name[50] , p->u16_age , p->u8_gendar , p->u16_recordNumber);
-		p=p->next;
-	}while(p!=head1->next);
-	printf("\n");
-	}
+       // p = head;
+    while (p != NULL)
+    {
+        printf("name : %s\n", p->u8_name);
+        printf("age: %lu\n" , p->u16_age);
+        printf("gender : %c \n" , p->u8_gendar);
+        printf("record number :%d \n" , p->u16_recordNumber);
+        p = p->next;    // Move to next node
+    }
+    printf("\n");
+       /* p=head1; // first logic error
+        do
+        {
+            printf("\nname : %s " , p->u8_name);
+            //strcpy(str1, "tutorialspoint");
+           puts(p->u8_name);
+            printf("\nage :%lu \n gender :%c \n record number :%d \n" , p->u16_age , p->u8_gendar , p->u16_recordNumber);
+            p = p ->next;
+        }
+        while(p!=head1->next);// second logic error
+        printf("\n");*/
+    }
 	return error;
 }
 Error_Status CLINIC_enuDisplayReservation()
@@ -217,11 +219,11 @@ Error_Status CLINIC_enuDisplayReservation()
     {
       error = LBTY_OK;
       printf("\nReservations :\n");
-        p=head2->next;
+        p=head2;
         do
         {
-            printf("\nname : ");
-            puts(p->u8_name);
+            printf("\nname : %s" , p->u8_name);
+            //puts(p->u8_name);
             printf("\ntime : %0.2f\n" , p->f32_time);
             p=p->next;
         }while(p!=head2->next);
@@ -237,6 +239,8 @@ Error_Status CLINIC_enuRecEmpty()
 		error = LBTY_NULL_POINTER; //empty
 	else
 		error = LBTY_OK; //not empty
+
+return error ;
 }
 Error_Status CLINIC_enuResEmpty()
 {
@@ -245,5 +249,7 @@ Error_Status CLINIC_enuResEmpty()
 		error = LBTY_NULL_POINTER; //empty
 	else
 		error = LBTY_OK; //not empty
+
+	return error;
 }
 

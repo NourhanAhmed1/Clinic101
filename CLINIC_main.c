@@ -13,7 +13,7 @@ int main()
 {
     Error_Status Error1, Error2, Error3, Error4, Error5 ,Error6;
     u8 u8_choice, u8_gender;
-    u8 u8_name[50];
+    char u8_name[50];
     u16 u16_age , u16_rec_num;
     f32 f32_time;
 	while(1)
@@ -32,34 +32,38 @@ int main()
 		{
 		 case 1:
 			printf("\nEnter the patient's name : ");
-			fgets(u8_name, sizeof(u8_name), stdin);
+			//fgets(u8_name, sizeof(u8_name), stdin);
+			//scanf("%[^\n]s",u8_name);
+			scanf("%s" , u8_name);
             printf("\nEnter the patient's age : ");
             scanf("%d" , &u16_age);
             printf("\nEnter the patient's gender : ");
-            scanf("%c" , &u8_gender);
+            scanf("%s" , &u8_gender);
             printf("\nEnter the patient's record number : ");
             scanf("%d" , &u16_rec_num);
 			Error1 = CLINIC_enuNewRecord(u8_name ,u16_age ,u8_gender ,u16_rec_num);
 			if(Error1 == LBTY_OK) printf("\n New Record was added successfully\n");
 			else if(Error1 == LBTY_NULL_POINTER) printf("\n New Record couldn't be added please try again\n");
-			else printf("\n This record already exists\n");
+			else if(Error1 == LBTY_NOT_OK )printf("\n This record already exists\n");
 			break;
 		 case 2:
 			printf("\nEnter the patient's name to edit : ");
-			fgets(u8_name, sizeof(u8_name), stdin);
+			//fgets(u8_name, sizeof(u8_name), stdin);
+            scanf("%s" , u8_name);
             printf("\nEnter the edited age : ");
             scanf("%d" , &u16_age);
             printf("\nEnter the edited gender : ");
-            scanf("%c" , &u8_gender);
+            scanf("%s" , &u8_gender);
             printf("\nEnter the edited record number : ");
             scanf("%d" , &u16_rec_num);
 			Error2 = CLINIC_enuEditRecord(u8_name ,u16_age ,u8_gender ,u16_rec_num);
 			if(Error2 == LBTY_OK) printf("\n Record was edited successfully\n");
-			else printf("\nPatient not found\n");
+			else if(Error2 == LBTY_NOT_OK)printf("\nPatient not found\n");
 			break;
 		 case 3:
             printf("\nEnter the patient's name to make reservation : ");
-			fgets(u8_name, sizeof(u8_name), stdin);
+			//fgets(u8_name, sizeof(u8_name), stdin);
+            scanf("%s" , u8_name);
             printf("\nEnter the appointment time(choose 2.00 , 2:30 , 3.00 ,3.30 , 4.00 , 4.30, 5.00): ");
             scanf("%d" , &f32_time);
 			Error3 = CLINIC_enuNewReservation(u8_name , f32_time);
@@ -78,13 +82,16 @@ int main()
          case 5:
             Error5 = CLINIC_enuDisplayRecords();
             if(Error5 == LBTY_NOT_OK) printf("\nNo Records to print\n");
+            break;
          case 6 :
             Error6 = CLINIC_enuDisplayReservation();
             if(Error6 == LBTY_NOT_OK) printf("\nNo Reservations to print\n");
+            break;
 		 case 7:
 			exit(1);
+			break;
 		 default:
-			printf("\nWrong choice\n");
+			printf("\nWrong choice\n"); break;
 		}/*End of switch*/
 	}//end of while
 
